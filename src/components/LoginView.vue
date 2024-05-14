@@ -20,10 +20,12 @@ const googleLogin = `${googleLoginUrl}?client_id=${googleClientId}&redirect_uri=
 </script>
 
 <style scoped>
+@import url(../assets/css/fonts.css);
+
 .container {
-    font-family: 'RIDIBatang', serif;
-    max-width: 430px;
-    max-height: 912px;
+    font-family: 'RIDIBatang';
+    width: 395px;
+    height: 900px;
     background-color: #FBF6EB;
     text-align: center;
 }
@@ -35,7 +37,7 @@ const googleLogin = `${googleLoginUrl}?client_id=${googleClientId}&redirect_uri=
 
 .dotori-logo-image {
     width: 170px;
-    align-items: center;
+    align-items: left;
     margin-top: 80px;
     margin-bottom: 80px;
 }

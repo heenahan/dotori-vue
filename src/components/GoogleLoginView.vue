@@ -17,14 +17,10 @@ axios.get(process.env.VUE_APP_DOTORI_API_URL + '/auth/login/google', {
     const data = response.data;
     const { accessToken, tokenType } = data.data;
     const token = `${tokenType} ${accessToken}`
-    
+
     localStorage.setItem("accessToken", token);    
     router.push('/')                
 }).catch((error) => {
     console.error(error)
 })
 </script>
-
-<style lang="scss" scoped>
-
-</style>
