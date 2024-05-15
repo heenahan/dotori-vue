@@ -19,7 +19,7 @@ axios.get(process.env.VUE_APP_DOTORI_API_URL + '/auth/login/google', {
     const token = `${tokenType} ${accessToken}`
 
     localStorage.setItem("accessToken", token);    
-    router.push('/')                
+    router.push('/search')                
 }).catch((error) => {
     console.error(error)
 })

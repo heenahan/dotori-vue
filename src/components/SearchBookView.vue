@@ -1,6 +1,7 @@
 <template>
     <div class="search-view">
-        <input type="text" placeholder="책 검색하기" class="search-bar" @keyup.enter="submit">
+        <input type="text" placeholder="책 검색하기" class="search-bar" v-model="query" @keyup.enter="submit">
+        <LoadingView :isLoading="isLoading"/>
         <div v-for="(book, bookId) in books" :key="bookId" class="book-item">
             <img :src="book.coverPath" alt="#" class="book-image">
             <div class="book-info">
@@ -15,28 +16,34 @@
 
 <script>
 import NavigationView from './NavigationView.vue'
+import LoadingView from './LoadingView.vue';
 import axios from 'axios'
 
 export default {
     components: {
-        NavigationView
+        NavigationView,
+        LoadingView
     },
     data() {
         return {
-            books: []
+            books: [],
+            isLoading: false,
+            query: ''
         }
     },
     methods: {
-        submit(event) {
+        submit() {
+            this.isLoading = true;
             axios.get(process.env.VUE_APP_DOTORI_API_URL + '/books/search', {
                 headers: {
                     Authorization: localStorage.getItem('accessToken')
                 },
                 params: {
-                    query: event.target.value
+                    query: this.query
                 }
             }).then((response) => {
                 const data = response.data.data;
+                this.isLoading = false;
                 this.books = data.content;
             }).catch((error) => {
                 console.error(error)
