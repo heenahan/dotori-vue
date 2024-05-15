@@ -1,5 +1,5 @@
 <template>
-    <div class="search-view">
+    <div class="search-view" @scroll="handleScroll">
         <input type="text" placeholder="책 검색하기" class="search-bar" v-model="query" @keyup.enter="submit">
         <LoadingView :isLoading="isLoading"/>
         <div v-for="(book, bookId) in books" :key="bookId" class="book-item">
@@ -28,26 +28,54 @@ export default {
         return {
             books: [],
             isLoading: false,
+            page: 1,
+            size: 10,
+            hasNext: false,
             query: ''
         }
     },
     methods: {
-        submit() {
-            this.isLoading = true;
+        handleScroll(event) {
+            const { scrollHeight, scrollTop, clientHeight } = event.target;
+            const isAtTheBottom = scrollHeight === scrollTop + clientHeight;
+            
+            // 스크롤 마지막이고 다음 페이지가 있는 경우
+            if (isAtTheBottom && this.hasNext) {
+                // 무한히 호출하지 못하도록 1초 딜레이
+                setTimeout(() => this.addBookList(), 1000);
+            }
+        },
+        addBookList() {
             axios.get(process.env.VUE_APP_DOTORI_API_URL + '/books/search', {
                 headers: {
                     Authorization: localStorage.getItem('accessToken')
                 },
                 params: {
-                    query: this.query
+                    query: this.query,
+                    page: this.page,
+                    size: this.size
                 }
             }).then((response) => {
                 const data = response.data.data;
+
+                this.hasNext = !data.last;
+                this.page += 1;
+                this.size += 10;
                 this.isLoading = false;
+
                 this.books = data.content;
             }).catch((error) => {
                 console.error(error)
             })
+        },
+        submit() {
+            this.books = [];
+            this.page = 1;
+            this.size = 10;   
+            this.isLoading = true;  
+            
+            console.log(this.query);
+            this.addBookList();
         }
     }
 }
@@ -58,7 +86,8 @@ export default {
 
 .search-view {
     font-family: 'SokchoBadaBatang', sans-serif;
-    margin-bottom: 60px; /* 네비게이션 바의 높이만큼 여백 추가 */
+    height: calc(100vh - 65px);
+    overflow: auto;
 }
 
 .search-bar {
