@@ -6,9 +6,9 @@
 </template>
 
 <script>
-    export default {
-        props: [ 'isLoading' ]
-    }
+export default {
+    props: [ 'isLoading' ]
+}
 </script>
 
 <style scoped>
