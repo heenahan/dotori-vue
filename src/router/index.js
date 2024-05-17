@@ -3,6 +3,7 @@ import LoginView from '@/components/LoginView.vue'
 import GoogleLoginView from '@/components/GoogleLoginView.vue'
 import SearchBookView from '@/components/SearchBookView.vue'
 import BookDetailView from '@/components/BookDetailView.vue'
+import MemberBookDetailView from '@/components/member_book/MemberBookDetailView.vue'
 
 const router = createRouter({
     history: createWebHistory(),
@@ -23,6 +24,12 @@ const router = createRouter({
             path: '/book',
             children: [
                 { path: ':isbn', name: 'bookDetail', component: BookDetailView }
+            ]
+        },
+        {
+            path: '/member-book',
+            children: [
+                { path: ':memberBookId', name: 'memberBookDetail', component: MemberBookDetailView }
             ]
         }
     ]
