@@ -2,7 +2,7 @@
     <nav class="top-nav">
         <ul class="top-nav-content">
             <li class="top-nav-button-back"><img src="../assets/back_img.png" alt="back" class="back_img" @click="handleBack"/></li>
-            <li class="top-nav-button-save"><span>저장</span></li>
+            <li class="top-nav-button-save" @click="createMemberBook"><span>기록하기</span></li>
         </ul>
     </nav>
     <div class="container">
@@ -62,9 +62,10 @@ export default {
                 Authorization: localStorage.getItem('accessToken')
             }
         }).then((response) => {
+            const { data } = response.data;
+
             this.isLoading = false;
-            this.book = response.data.data;
-            console.log(this.book);
+            this.book = data;
         }).catch((error) => {
             console.error(error);
         });
@@ -79,6 +80,22 @@ export default {
     methods: {
         handleBack() {
             this.router.back();
+        },
+        createMemberBook() {
+            axios.post(process.env.VUE_APP_DOTORI_API_URL + '/member-books', {
+                isbn: this.book.isbn13,
+                memberBookStatus: 'TO_READ'
+            }, {
+                headers: {
+                    Authorization: localStorage.getItem('accessToken')
+                }
+            }).then((response) => {
+                const { data } = response.data;
+                this.router.push('/member-book/' + data.memberBookId);
+            }).catch((error) => {
+                console.error(error);
+            });
+        
         }
     }
 }
@@ -220,6 +237,7 @@ export default {
 }
 
 .database-tag {
+    margin-top: 20px;
     text-align: right;
     color: #666;
 }

@@ -24,7 +24,7 @@ const googleLogin = `${googleLoginUrl}?client_id=${googleClientId}&redirect_uri=
 
 .container {
     font-family: 'RIDIBatang';
-    width: 395px;
+    width: 396px;
     height: 900px;
     background-color: #FBF6EB;
     text-align: center;
