@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import NavigationView from './NavigationView.vue'
+import NavigationView from './BottomNavigationView.vue'
 import LoadingView from './LoadingView.vue';
 import { useRouter } from 'vue-router'
 import axios from 'axios'
