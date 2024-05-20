@@ -1,11 +1,6 @@
 <template>
-    <nav class="top-nav">
-        <ul class="top-nav-content">
-            <li class="top-nav-button-back"><img src="../assets/back_img.png" alt="back" class="back_img" @click="handleBack"/></li>
-            <li class="top-nav-button-save" @click="createMemberBook"><span>기록하기</span></li>
-        </ul>
-    </nav>
-    <div class="container">
+    <TopNavigationView @clickButton="createMemberBook" :message="message"/>
+    <div class="book-detail">
         <LoadingView :isLoading="isLoading"/>
         <div class="book">
             <div class="book-title">{{ book.title }}</div>
@@ -40,19 +35,21 @@
             <div class="database-tag">도서 DB 제공: 알라딘</div>
         </div>
     </div>
-    <NavigationView/>
+    <BottomNavigationView />
 </template>
 
 <script>
 import LoadingView from './LoadingView.vue';
 import { useRoute, useRouter } from 'vue-router'
 import axios from 'axios'
-import NavigationView from './NavigationView.vue'
+import TopNavigationView from './TopNavigationView.vue'
+import BottomNavigationView from './BottomNavigationView.vue'
 
 export default {
     components: {
         LoadingView,
-        NavigationView
+        TopNavigationView,
+        BottomNavigationView
     },
     beforeMount() {
         const route = useRoute();
@@ -74,13 +71,11 @@ export default {
         return {
             router: useRouter(),
             isLoading: true,
-            book: {}
+            book: {},
+            message: '기록하기'
         }
     },
     methods: {
-        handleBack() {
-            this.router.back();
-        },
         createMemberBook() {
             axios.post(process.env.VUE_APP_DOTORI_API_URL + '/member-books', {
                 isbn: this.book.isbn13,
@@ -95,7 +90,6 @@ export default {
             }).catch((error) => {
                 console.error(error);
             });
-        
         }
     }
 }
@@ -103,41 +97,7 @@ export default {
 
 <style scoped>
 @import url(../assets/css/fonts.css);
-
-.top-nav {
-    position: fixed;
-    top: 0; left: 0;
-    width: 412px;
-    padding: 0;
-    background-color: white;
-}
-
-.top-nav-content {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
-
-.top-nav-content li {
-    display: inline-block;
-}
-
-.top-nav-button-back {
-    padding: 8px;
-    width: 20px; 
-    height: 20px;
-}
-
-.top-nav-button-save {
-    float: right;
-    font-size: 18px;
-    font-weight: bold;
-    padding: 12px 8px 8px 8px;
-    color: #F28379;
-    font-family: 'SokchoBadaBatang', sans-serif;
-}
-
-.container {
+.book-detail {
     font-family: 'SokchoBadaBatang', sans-serif;
     width: 396px;
     padding-top: 100px;
