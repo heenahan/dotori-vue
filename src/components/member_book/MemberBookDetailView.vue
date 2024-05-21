@@ -1,6 +1,6 @@
 <template>
     <TopNavigationView :message="message"/>
-    <div class="member-book-detail">
+    <div class="member-book-detail" @click="handleBookDetail">
         <div class="book-title">{{ memberBook.title }}</div>
         <div class="book-info">
             <div class="book-image"><img :src="memberBook.coverPath" /></div>
@@ -25,7 +25,7 @@ import MemberBookReadView from './MemberBookReadView.vue';
 import TopNavigationView from '../TopNavigationView.vue';
 import BottomNavigationView from '../BottomNavigationView.vue';
 import axios from 'axios';
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 
 export default {
     components: {
@@ -52,8 +52,14 @@ export default {
     data() {
         return {
             route: useRoute(),
+            router: useRouter(),
             memberBook: {},
             message: '수정하기'
+        }
+    },
+    methods: {
+        handleBookDetail() {
+            this.router.push({ name: 'bookDetail', params: { isbn: this.memberBook.isbn }})
         }
     }
 }
