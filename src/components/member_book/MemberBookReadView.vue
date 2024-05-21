@@ -1,6 +1,6 @@
 <template>
     <div class="book-read-info">
-      <div class="read-status">🍁읽음</div>
+      <div class="read-status"><span class="read-status-content">🍁읽음</span></div>
       <div class="star">
         <div class="star-content" v-for="index in 5" :key="index">
           <span v-if="index > Math.ceil(memberBook.star)"><img src="@/assets/blank_star.png" alt="blank_star"></span>
@@ -11,6 +11,13 @@
       <div class="book-level">
         <div class="book-level-tag">책 난이도</div>
         <div class="book-level-content">{{ `| ${convertBookLevel}` }}</div>
+      </div>
+      <div class="book-page">
+        <img src="@/assets/dotori_logo.png" alt="dotori_logo" class="dotori-logo">
+        <div class="book-page-content">
+          <div class="book-page-tag">도토리에서 더 많은 책을 읽어보세요📚</div>  
+          <div class="book-page-hegiht">책을 읽어서 <span>{{ calculateHeight }}</span>cm만큼 쌓였어요.</div>      
+        </div>
       </div>
       <div class="read-date">
         <div class="read-date-tag">독서 기간</div>
@@ -32,53 +39,59 @@
     </div>
   </template>
   
-  <script>
-  export default {
-    props: ['memberBook'],
-    computed: {
-      calculateReadDate() {
-        const startDate = new Date(this.memberBook.startDate);
-        const endDate = new Date(this.memberBook.endDate);
-        const day = (endDate - startDate) / (1000 * 60 * 60 * 24);
-        return Math.ceil(day);
-      },
-      convertBookLevel() {
-        switch (this.memberBook.bookLevel) {
-          case "EASY":
-            return "쉬워요";
-          case "A_LITTLE_EASY":
-            return "조금 쉬워요";
-          case "MEDIUM":
-            return "보통이에요";
-          case "A_LITTLE_DIFFICULT":
-            return "조금 어려워요";
-          case "DIFFICULT":
-            return "어려워요";
-          default:
-            return "";
-        }
+<script>
+export default {
+  props: ['memberBook'],
+  computed: {
+    calculateReadDate() {
+      const startDate = new Date(this.memberBook.startDate);
+      const endDate = new Date(this.memberBook.endDate);
+      const day = (endDate - startDate) / (1000 * 60 * 60 * 24);
+      return Math.ceil(day);
+    },
+    convertBookLevel() {
+      switch (this.memberBook.bookLevel) {
+        case "EASY":
+          return "쉬워요";
+        case "A_LITTLE_EASY":
+          return "조금 쉬워요";
+        case "MEDIUM":
+          return "보통이에요";
+        case "A_LITTLE_DIFFICULT":
+          return "조금 어려워요";
+        case "DIFFICULT":
+          return "어려워요";
+        default:
+          return "";
       }
+    },
+    calculateHeight() {
+      const totalPage = 36;
+      const page = Math.round(totalPage * 10  / 200) / 10;
+      return page.toFixed(1);
     }
   }
-  </script>
+}
+</script>
   
 <style scoped>
 .book-read-info {
-  font-size: 18px;
+  font-size: 15px;
   color: #555;
+  margin-top: 50px;
 }
 
 .read-status {
-    background-color: #9CD9C8;
-    width: 65px;
-    height: 25px;
-    border: 0px;
-    border-radius: 5px;
-    color: white;
-    text-align: center;
-    padding-top: 2px;
-    margin: 0 auto; 
-    font-weight: bold;
+  text-align: center;
+}
+
+.read-status-content {
+  background-color: #9CD9C8;
+  border: 0px;
+  border-radius: 5px;
+  color: white;
+  padding: 3px 2px 1px 1px;
+  text-align: center;
 }
 
 .star {
@@ -108,6 +121,32 @@
   margin-left: 5px;
 }
   
+.book-page {
+  margin-top: 20px;
+  background-color: #F2EDE4;
+  padding: 8px 0px 8px 5px;
+  border-radius: 5px;
+  display: flex;
+}
+
+.dotori-logo {
+  width: 40px;
+  height: 40px;
+}
+
+.book-page-content {
+  margin-left: 5px;
+}
+
+.book-page-tag {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.book-page-hegiht span {
+  color: #F28379;
+}
+
 .read-date {
   color: #555;
   margin-top: 50px;
@@ -164,9 +203,5 @@
 .start-date-tag, .end-date-tag {
   margin-right: 8px;
   font-weight: bold;
-}
-
-.start-date-content, .end-date-content {
-  font-size: 18px;
 }
 </style>  

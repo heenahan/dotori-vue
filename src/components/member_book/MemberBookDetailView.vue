@@ -13,6 +13,7 @@
         <MemberBookToReadView :memberBook="memberBook" v-if="memberBook.memberBookStatus === 'TO_READ'"/>
         <MemberBookReadingView :memberBook="memberBook" v-else-if="memberBook.memberBookStatus === 'READING'"/>
         <MemberBookReadView :memberBook="memberBook" v-else/>
+        <div class="database">DB 제공 : 알라딘</div>
     </div>
     <BottomNavigationView />
 </template>
@@ -60,12 +61,13 @@ export default {
 
 <style scoped>
 .member-book-detail {
-    margin-top: 100px;
+    margin-top: 120px;
+    margin-bottom: 60px;
     width: 396px;
 }
 
 .book-title {
-    font-size: 20%;
+    font-size: 22px;
     font-weight: bold;
     width: 290px;
     text-align: center;
@@ -94,7 +96,7 @@ export default {
 }
 
 .book-author, .book-publisher{ 
-    font-size: 16px;
+    font-size: 15px;
     color: #666;
     margin-bottom: 15px;
 }
@@ -102,10 +104,15 @@ export default {
 .book-category span {
     padding: 3px;
     text-align: center;
-    font-size: 16px;
+    font-size: 15px;
     color: white;
     border-radius: 5px;
     background-color: #9CD9C8;
-    
+}
+
+.database {
+  margin-top: 40px;
+  text-align: right;
+  color: #666;
 }
 </style>
