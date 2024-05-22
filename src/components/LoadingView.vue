@@ -1,6 +1,6 @@
 <template>
     <div class="loading" v-if="isLoading">
-        <img src="../assets/book_flip.gif" alt="loading"/>
+        <img src="@/assets/book_flip.gif" alt="loading"/>
         <div class="message">책을 가져오는 중...</div>
     </div>
 </template>
@@ -12,7 +12,7 @@ export default {
 </script>
 
 <style scoped>
-@import url(../assets/css/fonts.css);
+@import url("@/assets/css/fonts.css");
 
 .loading {
     position: relative;

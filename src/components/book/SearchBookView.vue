@@ -17,8 +17,8 @@
 </template>
 
 <script>
-import NavigationView from './BottomNavigationView.vue'
-import LoadingView from './LoadingView.vue';
+import NavigationView from '@/components/navigation/BottomNavigationView.vue'
+import LoadingView from '@/components/LoadingView.vue';
 import { useRouter } from 'vue-router'
 import axios from 'axios'
 
@@ -89,7 +89,7 @@ export default {
 </script>
 
 <style scoped>
-@import url(../assets/css/fonts.css);
+@import url("@/assets/css/fonts.css");
 
 .search-view {
     font-family: 'SokchoBadaBatang', sans-serif;

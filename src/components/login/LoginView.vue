@@ -1,12 +1,12 @@
 <template>
-    <div class="container">
+    <div class="login">
       <div class="title">늘 책과 함께, 도토리</div>
       <div class="dotori-logo">
-        <img src="../assets/dotori_logo.png" alt="dotori logo" class="dotori-logo-image"/>
+        <img src="@/assets/dotori_logo.png" alt="dotori logo" class="dotori-logo-image"/>
       </div>
       <div class="subtitle">나만의 독서 기록을 작성해보세요!</div>
       <div class="login-section">
-        <a :href="googleLogin"><img src="../assets/google_login_img.png" alt="google login" class="login-image"/></a>
+        <a :href="googleLogin"><img src="@/assets/google_login_img.png" alt="google login" class="login-image"/></a>
       </div>
     </div>
 </template>
@@ -20,9 +20,9 @@ const googleLogin = `${googleLoginUrl}?client_id=${googleClientId}&redirect_uri=
 </script>
 
 <style scoped>
-@import url(../assets/css/fonts.css);
+@import url("@/assets/css/fonts.css");
 
-.container {
+.login {
     font-family: 'RIDIBatang';
     width: 396px;
     height: 900px;
