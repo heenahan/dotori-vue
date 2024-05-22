@@ -39,11 +39,11 @@
 </template>
 
 <script>
-import LoadingView from './LoadingView.vue';
+import LoadingView from '@/components/LoadingView.vue';
 import { useRoute, useRouter } from 'vue-router'
 import axios from 'axios'
-import TopNavigationView from './TopNavigationView.vue'
-import BottomNavigationView from './BottomNavigationView.vue'
+import TopNavigationView from '@/components/navigation/TopNavigationView.vue'
+import BottomNavigationView from '@/components/navigation/BottomNavigationView.vue'
 
 export default {
     components: {
@@ -96,7 +96,7 @@ export default {
 </script>
 
 <style scoped>
-@import url(../assets/css/fonts.css);
+@import url("@/assets/css/fonts.css");
 .book-detail {
     font-family: 'SokchoBadaBatang', sans-serif;
     width: 396px;

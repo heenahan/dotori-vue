@@ -1,7 +1,7 @@
 <template>
     <nav class="top-nav">
         <ul class="top-nav-content">
-            <li class="top-nav-button-back"><img src="../assets/back_img.png" alt="back" class="back_img" @click="handleBack"/></li>
+            <li class="top-nav-button-back"><img src="@/assets/back_img.png" alt="back" class="back_img" @click="handleBack"/></li>
             <li class="top-nav-button-save" @click="$emit('clickButton')"><span>{{ message }}</span></li>
         </ul>
     </nav>
