@@ -1,9 +1,10 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import LoginView from '@/components/LoginView.vue'
-import GoogleLoginView from '@/components/GoogleLoginView.vue'
-import SearchBookView from '@/components/SearchBookView.vue'
-import BookDetailView from '@/components/BookDetailView.vue'
+import LoginView from '@/components/login/LoginView.vue'
+import GoogleLoginView from '@/components/login/GoogleLoginView.vue'
+import SearchBookView from '@/components/book/SearchBookView.vue'
+import BookDetailView from '@/components/book/BookDetailView.vue'
 import MemberBookDetailView from '@/components/member_book/MemberBookDetailView.vue'
+import MemberBookUpdateView from '@/components/member_book/MemberBookUpdateView.vue'
 
 const router = createRouter({
     history: createWebHistory(),
@@ -29,7 +30,8 @@ const router = createRouter({
         {
             path: '/member-book',
             children: [
-                { path: ':memberBookId', name: 'memberBookDetail', component: MemberBookDetailView }
+                { path: ':memberBookId', name: 'memberBookDetail', component: MemberBookDetailView },
+                { path: ':memberBookId/update', name: 'memberBookUpdate', component: MemberBookUpdateView }
             ]
         }
     ]
