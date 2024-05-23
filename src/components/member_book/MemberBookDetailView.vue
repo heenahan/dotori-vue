@@ -1,5 +1,5 @@
 <template>
-    <TopNavigationView :message="message"/>
+    <TopNavigationView :message="message" @clickButton="updateMemberBook"/>
     <div class="member-book-detail" @click="handleBookDetail">
         <div class="book-title">{{ memberBook.title }}</div>
         <div class="book-info">
@@ -22,8 +22,8 @@
 import MemberBookToReadView from './MemberBookToReadView.vue';
 import MemberBookReadingView from './MemberBookReadingView.vue';
 import MemberBookReadView from './MemberBookReadView.vue';
-import TopNavigationView from '../TopNavigationView.vue';
-import BottomNavigationView from '../BottomNavigationView.vue';
+import TopNavigationView from '../navigation/TopNavigationView.vue';
+import BottomNavigationView from '../navigation/BottomNavigationView.vue';
 import axios from 'axios';
 import { useRoute, useRouter } from 'vue-router'
 
@@ -36,7 +36,6 @@ export default {
         BottomNavigationView
     },
     beforeMount() {
-        console.log(this.route.params);
         axios.get(process.env.VUE_APP_DOTORI_API_URL + '/member-books/' + this.route.params.memberBookId, {
             headers: {
                 Authorization: localStorage.getItem('accessToken')
@@ -60,6 +59,9 @@ export default {
     methods: {
         handleBookDetail() {
             this.router.push({ name: 'bookDetail', params: { isbn: this.memberBook.isbn }})
+        },
+        updateMemberBook() {
+            this.router.push({ name: 'memberBookUpdate', params: { memberBookId: this.memberBook.id }})
         }
     }
 }
