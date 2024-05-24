@@ -1,6 +1,9 @@
 <template>
+    <TopNavigationView :message="message" @clickButton="updateMemberBook"/>
     <div class="member-book-update">
-        <div>책을 기록해보세요</div>
+        <div class="title">
+            도토리와 함께 책을 기록해보세요
+        </div>
         <div class="member-book-status" @click="handleStatusModal('block')">
             <div class="member-book-status-tag">📚 읽기 상태</div>
             <div class="member-book-status-content">{{ convertMemberBookStatus }}</div>
@@ -85,13 +88,20 @@
             </div>
         </div>
     </div>
+    <BottomNavigationView />
 </template>
 
 <script>
 import axios from 'axios';
 import { useRoute } from 'vue-router';
+import TopNavigationView from '../navigation/TopNavigationView.vue';
+import BottomNavigationView from '../navigation/BottomNavigationView.vue';
 
 export default {
+    components: {
+        TopNavigationView,
+        BottomNavigationView
+    },
     beforeMount() {
         axios.get(process.env.VUE_APP_DOTORI_API_URL + '/member-books/' + this.route.params.memberBookId, {
             headers: {
@@ -122,6 +132,7 @@ export default {
             masks: {
                 modelValue: 'YYYY-MM-DD'
             },
+            message: '저장하기',
             maxDate: new Date().toISOString().slice(0, 10),
             tempStar: 0 // 마우스오버 시 임시 별점
         };
@@ -150,11 +161,32 @@ export default {
             if (status === 'READING') {
                 this.memberBook.startDate = new Date().toISOString().slice(0, 10);
                 this.maxDate = new Date().toISOString().slice(0, 10);
+                this.memberBook.page = 0;
+                this.tempStar = 0;
+                this.memberBook.bookLevel = null;
             } else if (status === 'READ') {
                 this.memberBook.startDate = new Date().toISOString().slice(0, 10);
                 this.memberBook.bookLevel = 'EASY';
             }
             this.statusSelectStyle.display = 'none';
+        },
+        updateMemberBook() {
+            axios.patch(process.env.VUE_APP_DOTORI_API_URL + '/member-books/' + this.route.params.memberBookId, {
+                memberBookStatus: this.memberBook.memberBookStatus,
+                startDate: this.memberBook.startDate,
+                endDate: this.maxDate,
+                page: this.memberBook.page,
+                star: this.tempStar,
+                bookLevel: this.memberBook.bookLevel
+            }, {
+                headers: {
+                    Authorization: localStorage.getItem('accessToken')
+                }
+            }).then(() => {
+                this.$router.push({ name: 'memberBookDetail', params: { memberBookId: this.route.params.memberBookId }});
+            }).catch((error) => {
+                console.error(error);
+            });
         }
     },
     computed: {
@@ -193,6 +225,14 @@ export default {
 <style scoped>
 .member-book-update {
     width: 412px;
+    padding-top: 50px;
+    padding-bottom: 60px;
+}
+
+.title {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 20px;
 }
 
 .member-book-status, .start-date, .end-date, .page, .book-level {
@@ -204,13 +244,13 @@ export default {
 }
 
 .member-book-status-tag, .start-date-tag, .end-date-tag, .page-tag, .star-bar-tag, .book-level-tag {
-    font-size: 16px;
+    font-size: 14px;
     padding: 20px 0 0 20px;
     font-weight: bold;
 }
 
 .member-book-status-content, .start-date-content, .end-date-content, .page-content, .book-level-content{
-    font-size: 20px;
+    font-size: 18px;
     padding: 20px 0 20px 20px;
 }
 
@@ -226,7 +266,7 @@ export default {
 
 .member-book-status-select, .page-select, .book-level-select {
     position: inherit;
-    bottom: 0;
+    bottom: 50px;
     width: 412px;
     background-color: #F2EDE4;
     border-radius: 20px 20px 0 0;
