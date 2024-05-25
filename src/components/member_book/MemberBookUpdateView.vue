@@ -81,9 +81,9 @@
                     <div class="book-level-select-tag">읽기 상태 선택</div>
                     <div class="book-level-select-content" @click="changeBookLevel('EASY')">쉬워요</div>
                     <div class="book-level-select-content" @click="changeBookLevel('A_LITTLE_EASY')">조금 쉬워요</div>
-                    <div class="book-level-select-content" @click="changeBookLevel('MEDIUM')">보통이에요</div>
-                    <div class="book-level-select-content" @click="changeBookLevel('A_LITTLE_DIFFICULT')">조금 어려워요</div>
-                    <div class="book-level-select-content" @click="changeBookLevel('DIFFICULT')">어려워요</div>
+                    <div class="book-level-select-content" @click="changeBookLevel('NORMAL')">보통이에요</div>
+                    <div class="book-level-select-content" @click="changeBookLevel('A_LITTLE_HARD')">조금 어려워요</div>
+                    <div class="book-level-select-content" @click="changeBookLevel('HARD')">어려워요</div>
                 </div>
             </div>
         </div>
@@ -208,11 +208,11 @@ export default {
                 return "쉬워요";
                 case "A_LITTLE_EASY":
                 return "조금 쉬워요";
-                case "MEDIUM":
+                case "NORMAL":
                 return "보통이에요";
-                case "A_LITTLE_DIFFICULT":
+                case "A_LITTLE_HARD":
                 return "조금 어려워요";
-                case "DIFFICULT":
+                case "HARD":
                 return "어려워요";
                 default:
                 return "";
