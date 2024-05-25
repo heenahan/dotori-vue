@@ -5,6 +5,10 @@
         <div class="read-rate-tag">독서량</div>
         <div class="read-rate-message">{{ convertReadRateMessage }}</div>
         <progress class="progress-bar" :value="memberBook.percent" min="0" max="100"/>
+        <div class="read-rate-content">
+          <span class="percent">{{ memberBook.percent }}%</span>
+          <span class="page">{{ memberBook.page }} .p / {{ memberBook.totalPage }} .p</span>
+        </div>
       </div>
       <div class="read-date">
         <div class="read-date-tag">독서 기간</div>
@@ -102,6 +106,21 @@ export default {
 .progress-bar::-webkit-progress-value {
   background-color: #9CD9C8;
   border-radius: 5px;
+}
+
+.read-rate-content {
+  display: flex;
+  width: 100%;
+  margin-top: 5px;
+}
+
+.percent {
+  color: #F28379;
+}
+
+.page {
+  margin-left: auto;
+  color: #555;
 }
 
 .read-date {

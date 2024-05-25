@@ -55,18 +55,18 @@ export default {
           return "쉬워요";
         case "A_LITTLE_EASY":
           return "조금 쉬워요";
-        case "MEDIUM":
+        case "NORMAL":
           return "보통이에요";
-        case "A_LITTLE_DIFFICULT":
+        case "A_LITTLE_HARD":
           return "조금 어려워요";
-        case "DIFFICULT":
+        case "HARD":
           return "어려워요";
         default:
           return "";
       }
     },
     calculateHeight() {
-      const totalPage = 36;
+      const totalPage = this.memberBook.totalPage;
       const page = Math.round(totalPage * 10  / 200) / 10;
       return page.toFixed(1);
     }
