@@ -136,7 +136,7 @@ export default {
 .book-image {
     width: 100px;
     height: 130px;
-    margin-right: 10px;
+    margin-right: 8px;
     border: 0px;
     border-top-left-radius: 10px;
     border-bottom-left-radius: 10px;
@@ -144,6 +144,7 @@ export default {
 
 .book-info {
     height: 130px;
+    margin-right: 8px;
     display: flex;
     flex-direction: column;
     justify-content: space-around;
