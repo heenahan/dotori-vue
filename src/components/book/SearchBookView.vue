@@ -13,26 +13,25 @@
             </div>
         </div>
     </div>
-    <NavigationView/>
+    <BottomNavigationView/>
 </template>
 
 <script>
-import NavigationView from '@/components/navigation/BottomNavigationView.vue'
+import BottomNavigationView from '@/components/navigation/BottomNavigationView.vue'
 import LoadingView from '@/components/LoadingView.vue';
 import { useRouter } from 'vue-router'
 import axios from 'axios'
 
 export default {
     components: {
-        NavigationView,
+        BottomNavigationView,
         LoadingView
     },
     data() {
         return {
             router: useRouter(),
             books: [],
-            isLoading: false,
-            page: 1,
+            page: 0,
             size: 10,
             hasNext: false,
             query: ''
@@ -46,11 +45,15 @@ export default {
             // 스크롤 마지막이고 다음 페이지가 있는 경우
             if (isAtTheBottom && this.hasNext) {
                 // 무한히 호출하지 못하도록 1초 딜레이
-                setTimeout(() => this.addBookList(), 1000);
+                setTimeout(() => {
+                    this.addBookList().then((books) => {
+                        this.books = this.books.concat(books);
+                    })
+                }, 1000);
             }
         },
-        addBookList() {
-            axios.get(process.env.VUE_APP_DOTORI_API_URL + '/books/search', {
+        async addBookList() {
+            return await axios.get(process.env.VUE_APP_DOTORI_API_URL + '/books/search', {
                 headers: {
                     Authorization: localStorage.getItem('accessToken')
                 },
@@ -64,22 +67,22 @@ export default {
 
                 this.hasNext = !data.last;
                 this.page += 1;
-                this.size += 10;
                 this.isLoading = false;
 
-                this.books = data.content;
+                return data.content;
             }).catch((error) => {
                 console.error(error)
             })
         },
         submit() {
             this.books = [];
-            this.page = 1;
+            this.page = 0;
             this.size = 10;   
             this.isLoading = true;  
             
-            console.log(this.query);
-            this.addBookList();
+            this.addBookList().then((books) => {
+                this.books = books;
+            });
         },
         showBookDetail(isbn) {
             this.router.push('/book/' + isbn);
@@ -158,6 +161,7 @@ export default {
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 2; /* 두 줄까지만 보이도록 설정 */
 }
+
 .book-title {
     height: 35px;
     margin-bottom: 13px;
