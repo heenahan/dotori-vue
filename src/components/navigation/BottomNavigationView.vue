@@ -3,7 +3,7 @@
         <ul class="bottom-nav-content">
             <li><a href="#">검색</a></li>
             <li><a href="#">서재</a></li>
-            <li><a href="#">통계</a></li>
+            <li><a href="/statistics">통계</a></li>
             <li><a href="#">설정</a></li>
         </ul>
     </nav>
