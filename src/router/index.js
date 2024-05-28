@@ -5,6 +5,7 @@ import SearchBookView from '@/components/book/SearchBookView.vue'
 import BookDetailView from '@/components/book/BookDetailView.vue'
 import MemberBookDetailView from '@/components/member_book/MemberBookDetailView.vue'
 import MemberBookUpdateView from '@/components/member_book/MemberBookUpdateView.vue'
+import StatisticsYearView from '@/components/statistics/StatisticsYearView.vue'
 
 const router = createRouter({
     history: createWebHistory(),
@@ -32,6 +33,12 @@ const router = createRouter({
             children: [
                 { path: ':memberBookId', name: 'memberBookDetail', component: MemberBookDetailView },
                 { path: ':memberBookId/update', name: 'memberBookUpdate', component: MemberBookUpdateView }
+            ]
+        },
+        {
+            path: '/statistics',
+            children: [
+                { path: '', name: 'statisticsYear', component: StatisticsYearView }
             ]
         }
     ]

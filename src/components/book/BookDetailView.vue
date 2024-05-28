@@ -165,7 +165,6 @@ export default {
 .book-info-context {
     color: #666;
     font-size: 16px;
-
 }
 
 .book-info-tag, .book-info-context {
