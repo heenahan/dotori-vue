@@ -2,14 +2,13 @@
     <div class="member-book-view" @scroll="handleScroll">
         <div class="title">나의 서제</div>
         <div class="member-book-status">
-            <div class="member-book-status-tag">전체</div>
-            <div class="member-book-status-tag">읽음</div>
-            <div class="member-book-status-tag">읽는 중</div>
-            <div class="member-book-status-tag">읽을 예정</div>
+            <div class="member-book-status-tag" @click="convertMemberBookStatus(null)">전체</div>
+            <div class="member-book-status-tag" @click="convertMemberBookStatus('READ')">읽음</div>
+            <div class="member-book-status-tag" @click="convertMemberBookStatus('READING')">읽는 중</div>
+            <div class="member-book-status-tag" @click="convertMemberBookStatus('TO_READ')">읽을 예정</div>
         </div>
-        <LoadingView :isLoading="isLoading"/>
         <div class="member-books">
-            <div v-for="memberBook in memberBooks" :key="memberBook.id" class="member-book-item">
+            <div v-for="memberBook in memberBooks" :key="memberBook.id" class="member-book-item" @click="moveMemberBookDetail(memberBook.memberBookId)">
                 <img :src="memberBook.coverPath" alt="#" class="member-book-image">
                 <div class="member-book-detail-info">
                     <div class="book-info">
@@ -64,48 +63,75 @@
 
 <script>
 import axios from 'axios';
-import LoadingView from '@/components/LoadingView.vue';
+import { useRouter } from 'vue-router';
 import BottomNavigationView from '@/components/navigation/BottomNavigationView.vue';
 
 export default {
     components: {
-        LoadingView,
         BottomNavigationView
     },
     beforeMount() {
-        this.isLoading = true;
-        axios.get(process.env.VUE_APP_DOTORI_API_URL + '/member-books', {
-            headers: {
-                Authorization: localStorage.getItem('accessToken')
-            }
-        }).then((response) => {
-            const data = response.data.data;
-            this.isLoading = false;
-            this.memberBooks = data.content;
-        }).catch((error) => {
-            console.error(error);
-        });
+        this.addMemberBooks().then((memberBooks) => {
+            this.memberBooks = memberBooks;
+        })
     },
     data() {
         return {
             memberBooks: [],
-            isLoading: false,
-            page: 1,
+            memberBookStatus: null,
+            page: 0,
             size: 10,
-            hasNext: false
+            hasNext: false,
+            router: useRouter()
         }
     },
     methods: {
         handleScroll(event) {
             const { scrollHeight, scrollTop, clientHeight } = event.target;
-            const isAtTheBottom = scrollHeight === scrollTop + clientHeight;
+            const isAtTheBottom = scrollHeight === scrollTop + clientHeight + 0.5;
             
             // 스크롤 마지막이고 다음 페이지가 있는 경우
             if (isAtTheBottom && this.hasNext) {
+                console.log('scroll');
                 // 무한히 호출하지 못하도록 1초 딜레이
-                setTimeout(() => this.addBookList(), 1000);
+                setTimeout(() => {
+                    this.addMemberBooks().then((memberBooks) => {
+                        this.memberBooks = this.memberBooks.concat(memberBooks);
+                    });
+                }, 1000);
             }
         },
+        async addMemberBooks() {
+            return await axios.get(process.env.VUE_APP_DOTORI_API_URL + '/member-books', {
+                headers: {
+                    Authorization: localStorage.getItem('accessToken')
+                },
+                params: {
+                    status: this.memberBookStatus,
+                    page: this.page,
+                    size: this.size
+                }
+            }).then((response) => {
+                const { data } = response.data;
+                this.hasNext = !data.last;
+                this.page += 1;
+                return  data.content;
+            }).catch((error) => {
+                console.error(error);
+            });
+        },
+        convertMemberBookStatus(status) {
+            this.memberBookStatus = status;
+            this.page = 0; this.size = 10;
+            this.memberBooks = [];
+
+            this.addMemberBooks().then((memberBooks) => {
+                this.memberBooks = memberBooks;
+            })
+        },
+        moveMemberBookDetail(memberBookId) {
+            this.router.push('/member-book/' + memberBookId);
+        }
     },
     computed: {
         calculateHeight() {
@@ -120,6 +146,19 @@ export default {
 </script>
 
 <style scoped>
+@import url("@/assets/css/fonts.css");
+
+.member-book-view {
+    font-family: 'SokchoBadaBatang', sans-serif;
+    height: calc(100vh - 65px); 
+    overflow: auto;
+    width: 396px;
+}
+
+.member-book-view::-webkit-scrollbar {
+    display: none;
+}
+
 .title {
     font-size: 20px;
     font-weight: bold;
@@ -127,6 +166,7 @@ export default {
     margin-bottom: 20px;
     color: #F28379;
 }
+
 .member-book-status {
     width: 100%;
     display: flex;
@@ -140,17 +180,6 @@ export default {
     text-align: center;
     font-size: 16px;
 
-}
-
-.member-book-view {
-    font-family: 'SokchoBadaBatang', sans-serif;
-    height: calc(100vh - 65px); 
-    overflow: auto;
-    width: 396px;
-}
-
-.member-book-view::-webkit-scrollbar {
-    display: none;
 }
 
 .member-books {
